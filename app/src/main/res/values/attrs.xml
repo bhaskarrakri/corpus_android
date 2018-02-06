@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="view_flipper_indicator" format="reference"/>
+
+    <declare-styleable name="BottomNavigationBehavior_Params">
+        <attr name="tabLayoutId" format="reference"/>
+    </declare-styleable>
+
+</resources>

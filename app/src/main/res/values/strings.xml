@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">VideoCorpus</string>
+
+    //ga tracking id
+    <string name="ga_tracking_id">UA-110820824-1</string>
+
+    <string name="home_title">HOME</string>
+    <string name="livetv">LIVE TV</string>
+    <string name="catchup">CATCHUP</string>
+    <string name="movies">MOVIES</string>
+    <string name="settings">SETTINGS</string>
+    <string name="login">LOGIN</string>
+    <string name="more">More</string>
+
+    <string name="sample">sample</string>
+    <string name="UserAgent">User-Agent</string>
+    <string name="Mozilla">Mozilla/5.0 ( compatible ) </string>
+    <string name="Accept">Accept</string>
+    <string name="AceeptExtension">*/*</string>
+
+    //image contetn description
+    <string name="imgcontentdesc">Image Content Description</string>
+    <string name="google_admob_testid">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="google_app_testid">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="nodata">No Data</string>
+    <string name="commondata">Common Data</string>
+    <string name="player_exception">Streaming Error</string>
+    <string name="synopsis">SYNOPSIS</string>
+    <string name="castcrew">CAST AND CREW</string>
+    <string name="na">N/A</string>
+    <string name="min">min</string>
+    <string name="like">likes</string>
+    <string name="relatedmovies">Related Movies</string>
+    <string name="norelatedmovies">No Related Movies</string>
+    <string name="relatedchannels">Related Channels</string>
+    <string name="norelatedchannels">No Related Channels</string>
+
+    <string name="alert_title">ARE YOU SURE TO LOGOUT</string>
+    <string name="alert_btnyes">YES</string>
+    <string name="alert_btnno">No</string>
+
+    <string name="email">Email Address</string>
+    <string name="pwd">Password</string>
+    <string name="fpwd">FORGOT PASSWORD</string>
+    <string name="logins">LOG IN</string>
+    <string name="logout">LOG OUT</string>
+    <string name="success">Logged In Successfully</string>
+    <string name="loggedout">Logged Out</string>
+    <string name="emptyfields">Enter Empty Fields</string>
+    <string name="emptyspace">Spaces Not Allowed</string>
+    <string name="pressexit">Press again back to exit</string>
+</resources>

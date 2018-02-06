@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.video.corpus.media.PlayerActivity"
+    android:background="@color/colorPrimary">
+
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:id="@+id/exoplayercons">
+
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/simpleexoplayerview" />
+
+            <ProgressBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressbar"
+                app:layout_constraintTop_toTopOf="@+id/simpleexoplayerview"
+                app:layout_constraintBottom_toBottomOf="@+id/simpleexoplayerview"
+                app:layout_constraintLeft_toLeftOf="@+id/simpleexoplayerview"
+                app:layout_constraintRight_toRightOf="@+id/simpleexoplayerview"/>
+            <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Txt_player_exception"
+                android:text="@string/player_exception"
+                android:textSize="@dimen/sp_twenty"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintTop_toTopOf="@+id/simpleexoplayerview"
+                app:layout_constraintBottom_toBottomOf="@+id/simpleexoplayerview"
+                app:layout_constraintLeft_toLeftOf="@+id/simpleexoplayerview"
+                app:layout_constraintRight_toRightOf="@+id/simpleexoplayerview"/>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/Cons_player_view_layout"
+            android:background="@color/colorPrimary">
+
+
+            <include layout="@layout/like_share_layout"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <FrameLayout
+            android:paddingLeft="@dimen/dp_ten"
+            android:paddingRight="@dimen/dp_ten"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:id="@+id/frame_layout"
+            android:background="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

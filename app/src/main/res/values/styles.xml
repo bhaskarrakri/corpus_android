@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="view_flipper_indicator">@drawable/view_flipper_indicator</item>
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">0sp</item>
+    </style>
+
+    <style name="ExoMediaButton.FullScreen">
+        <item name="android:src">@drawable/open</item>
+        <item name="android:contentDescription">@string/exo_controls_rewind_description</item>
+    </style>
+
+</resources>

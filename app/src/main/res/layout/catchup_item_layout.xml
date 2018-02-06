@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cons_lay"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/img_border"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/viewpager_height"
+        android:id="@+id/imgview"
+        android:src="@mipmap/placeholder_crousel"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/sample"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtview"
+        app:layout_constraintHorizontal_weight="1"
+        android:text=""
+        android:background="@drawable/bg_gradient"
+        android:textColor="@color/toolbar_text"
+        android:textSize="@dimen/sp_twenty"
+        app:layout_constraintEnd_toEndOf="@id/imgview"
+        app:layout_constraintBottom_toBottomOf="@id/imgview"
+        android:padding="@dimen/dp_ten"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

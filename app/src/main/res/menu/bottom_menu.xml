@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_home"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/home_title"
+        />
+    <item
+        android:id="@+id/action_livetv"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/livetv"
+        />
+    <item
+        android:id="@+id/action_catchup"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/catchup"
+        />
+    <item
+        android:id="@+id/action_movies"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/movies" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/login" />
+
+</menu>

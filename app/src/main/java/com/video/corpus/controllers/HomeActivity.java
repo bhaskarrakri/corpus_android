@@ -48,7 +48,7 @@ public class HomeActivity extends BaseActivity {
          bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
 
-        showlogs("master",cc.getSessioId());
+        showlogs("mastertest",cc.getSessioId());
          if(isnotempty(cc.getSessioId()))
          {
              showlogs("session Id",cc.getSessioId());

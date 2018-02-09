@@ -49,7 +49,7 @@ public class HomeActivity extends BaseActivity {
 
 
 
-        showlogs("Test master",cc.getcustomerName());
+        showlogs("Test branch",cc.getcustomerName());
          if(isnotempty(cc.getSessioId()))
          {
              showlogs("session Id",cc.getSessioId());

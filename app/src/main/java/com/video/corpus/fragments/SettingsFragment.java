@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import com.video.corpus.R;
 import com.video.corpus.controllers.HomeActivity;
-import com.video.corpus.global.Util;
+import com.video.corpus.global.Utils;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.network.AMSRequest;
 
@@ -40,7 +40,7 @@ public class SettingsFragment extends BaseFragment {
      btnLogout.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             new AMSRequest(cc.gettrapurl(), Util.getInstance().setamsobject(context,AMS_INACTIVE));
+             new AMSRequest(cc.gettrapurl(), Utils.getInstance().setamsobject(context,AMS_INACTIVE));
              cc.resetsharedpref();
              showtaost(context,getResources().getString(R.string.loggedout));
              Intent intent=new Intent(getActivity(),HomeActivity.class);

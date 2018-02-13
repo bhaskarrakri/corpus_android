@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import com.google.android.gms.ads.MobileAds;
 import com.video.corpus.Interface.Response_string;
@@ -18,14 +17,15 @@ import com.video.corpus.fragments.HomeFragment;
 import com.video.corpus.fragments.LiveTvFragment;
 import com.video.corpus.fragments.MoviesFragment;
 import com.video.corpus.fragments.SettingsFragment;
-import com.video.corpus.global.Util;
+import com.video.corpus.global.Utils;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.network.AMSRequest;
 import com.video.corpus.network.NetworkRequest;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import static com.video.corpus.global.Util.getInstance;
+import static com.video.corpus.global.Utils.getInstance;
 
 public class HomeActivity extends BaseActivity {
 
@@ -36,6 +36,8 @@ public class HomeActivity extends BaseActivity {
     private commonclass cc;
     private  Handler  handler;
     private Runnable runnable;
+    private Response_string<String> subscriberesponse;
+    private ArrayList<String> params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,19 @@ public class HomeActivity extends BaseActivity {
         toolbartext(context,getString(R.string.home_title));
          bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
+        readresponse();
+         if(cc.isLoggedIn() && !(isnotempty(cc.getusername())))
+         {
+             setparams();
+             String url=APP_SERVER_COMB+cc.getSessioId()+subscriber_info_url;
+             new NetworkRequest(context, url, params, subscriberesponse).execute();
+         }
 
 
-        showlogs("Test branch",cc.getcustomerName());
-        showlogs("Test branch1",cc.getcustomerName());
          if(isnotempty(cc.getSessioId()))
          {
              showlogs("session Id",cc.getSessioId());
-             readresponse();
+          //   readresponse();
              deviceconfig();
          }
 
@@ -165,7 +172,7 @@ public class HomeActivity extends BaseActivity {
 
         if(count==2)
         {
-            new AMSRequest(cc.gettrapurl(),  Util.getInstance().setamsobject(context,AMS_INACTIVE));
+            new AMSRequest(cc.gettrapurl(),  Utils.getInstance().setamsobject(context,AMS_INACTIVE));
             finish();
         }
         else if(count<2)
@@ -222,7 +229,7 @@ public class HomeActivity extends BaseActivity {
              @Override
              public void run() {
 
-                 new AMSRequest(cc.gettrapurl(), Util.getInstance().setamsobject(context,AMS_ACTIVE));
+                 new AMSRequest(cc.gettrapurl(), Utils.getInstance().setamsobject(context,AMS_ACTIVE));
 
                  handler.postDelayed(runnable,cc.getamstimeinterval());
 
@@ -250,6 +257,17 @@ public class HomeActivity extends BaseActivity {
                 }
             }
         };
+
+        subscriberesponse = new Response_string<String>() {
+            @Override
+            public void readResponse(String res) {
+                showlogs("subscriberesponse", res);
+                if (!TextUtils.isEmpty(res)) {
+                    loadsubscriberinfo(res);
+                }
+            }
+        };
+
     }
 
     private void loadAMS_url(String res) {
@@ -288,7 +306,8 @@ public class HomeActivity extends BaseActivity {
                                     }
                                 }
 
-                                if(isnotempty(cc.gettrapurl()) && cc.getamstimeinterval()!=0)
+
+                                if(isnotempty(cc.gettrapurl()) && cc.getamstimeinterval()!=0 )
                                 {
                                     break;
                                 }
@@ -325,5 +344,22 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    private void setparams() {
+        params = new ArrayList<>();
+    }
 
+    //load subscriber info
+    private void loadsubscriberinfo(String  res)
+    {
+        if(readstatuscode(res,context))
+        {
+            try {
+                JSONObject jsonObject=new JSONObject(res);
+                cc.setusername(jsonObject.optString("emailId",""));
+                showlogs("username",cc.getusername());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

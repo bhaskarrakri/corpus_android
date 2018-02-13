@@ -2,6 +2,8 @@ package com.video.corpus.controllers;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -15,17 +17,28 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.video.corpus.Interface.Constants;
+import com.video.corpus.Interface.MediaSynopsisInterface;
 import com.video.corpus.Interface.actionbarcustom;
 import com.video.corpus.R;
 import com.video.corpus.global.BottomNavigationViewBehavior;
+import com.video.corpus.global.commonclass;
+
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
 
 ///**
 // * Created by Bhaskar.c on 12/6/2017.
 // */
 
-public class BaseActivity extends AppCompatActivity implements actionbarcustom,Constants {
+public class BaseActivity extends AppCompatActivity implements actionbarcustom,Constants,MediaSynopsisInterface {
 
+
+    public static final String username_admin="admin";
+    public static final String reg_apikey="0276d666-3593-40ae-b2fb-18deb8c54255";
     public static final int timeout=10000;
     public static final int exit_timeout=5000;
    // static final int responsecode=200;
@@ -187,4 +200,58 @@ public class BaseActivity extends AppCompatActivity implements actionbarcustom,C
 
     }
 
+    @Override
+    public void onfragmentclick() {
+
+    }
+
+
+    public String getMACAddress () {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:",b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "02:00:00:00:00:00";
+    }
+
+
+    //read status code
+    public boolean readstatuscode(String res,Context context)
+    {
+        boolean result=false;
+        commonclass cc=new commonclass(context);
+        try{
+            JSONObject jsonObjectMain=new JSONObject(res);
+            JSONObject jsonObject_status=jsonObjectMain.optJSONObject("responseStatus");
+            if(jsonObject_status.optString("statusCode","").length()>0
+                    && jsonObject_status.optString("statusCode","").equals("200"))
+            {
+                result=true;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

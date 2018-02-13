@@ -3,6 +3,9 @@
 
     //ga tracking id
     <string name="ga_tracking_id">UA-110820824-1</string>
+    //fb
+    <string name="facebook_app_id">164611940986527</string>
+    <string name="fb_login_protocol_scheme">fb164611940986527</string>
 
     <string name="home_title">HOME</string>
     <string name="livetv">LIVE TV</string>

@@ -17,7 +17,8 @@ import com.google.android.gms.ads.AdView;
 
 import com.google.gson.Gson;
 import com.video.corpus.Interface.Constants;
-import com.video.corpus.global.Util;
+import com.video.corpus.Interface.MediaSynopsisInterface;
+import com.video.corpus.global.Utils;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.google.LargeBannerView;
 import com.video.corpus.pojos.homecontent_model;
@@ -36,7 +37,7 @@ public class BaseFragment extends Fragment implements Constants {
     JSONArray jsonArray_base;
     public  final ViewGroup nullParent = null;
     Activity activity;
-    final Util util = Util.getInstance();
+    final Utils util = Utils.getInstance();
     private commonclass cc;
 
     @Override

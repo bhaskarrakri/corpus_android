@@ -146,4 +146,14 @@ public class commonclass {
     {
         editor.putString("trapurl",trapurl).apply();
     }
+
+    public  int getplaybackId()
+    {
+        return  sharedPreferences.getInt("playbackId",0);
+    }
+    public  void setplaybackId(int playbackId)
+    {
+        editor.putInt("playbackId",playbackId).apply();
+    }
+
 }

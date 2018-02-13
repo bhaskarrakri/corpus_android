@@ -3,6 +3,7 @@ package com.video.corpus.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+import com.video.corpus.Interface.MediaSynopsisInterface;
 import com.video.corpus.R;
 import com.video.corpus.global.commonclass;
-import com.video.corpus.media.PlayerLiveTvActivity;
 import com.video.corpus.media.PlayerMoviesActivity;
 import com.video.corpus.pojos.homecontent_model;
 
@@ -46,7 +47,7 @@ public class MoviesSynopsisFragment extends BaseFragment {
     private LinearLayout linContent;
     private  LayoutInflater layoutInflater;
     private commonclass cc;
-
+    private MediaSynopsisInterface mediaSynopsisInterface;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +60,12 @@ public class MoviesSynopsisFragment extends BaseFragment {
         initViews();
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mediaSynopsisInterface=(MediaSynopsisInterface) getActivity();
     }
 
     //initiating views
@@ -301,12 +308,9 @@ public class MoviesSynopsisFragment extends BaseFragment {
                         {
                             setmoviecontent(homecontent_models,cc);
                         }
-
-                        Intent intent;
-
-                            intent=new Intent(context, PlayerMoviesActivity.class);
-
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        mediaSynopsisInterface.onfragmentclick();
+                        Intent intent=new Intent(context, PlayerMoviesActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                     }
                 });

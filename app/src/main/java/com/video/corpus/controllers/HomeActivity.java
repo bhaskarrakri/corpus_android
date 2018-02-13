@@ -57,6 +57,9 @@ public class HomeActivity extends BaseActivity {
              new NetworkRequest(context, url, params, subscriberesponse).execute();
          }
 
+        
+
+        showlogs("master123","master123");
         showlogs("branch123","branch123");
          if(isnotempty(cc.getSessioId()))
          {

@@ -58,7 +58,7 @@ public class HomeActivity extends BaseActivity {
          }
 
 
-        showlogs("master","master");
+        showlogs("master123","master123");
          if(isnotempty(cc.getSessioId()))
          {
              showlogs("session Id",cc.getSessioId());

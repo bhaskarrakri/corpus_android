@@ -59,6 +59,7 @@ public class HomeActivity extends BaseActivity {
 
 
         showlogs("master123","master123");
+        showlogs("branch123","branch123");
          if(isnotempty(cc.getSessioId()))
          {
              showlogs("session Id",cc.getSessioId());

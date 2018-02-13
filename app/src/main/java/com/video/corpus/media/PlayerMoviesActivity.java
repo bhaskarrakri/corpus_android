@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -38,6 +40,7 @@ import com.google.gson.reflect.TypeToken;
 import com.video.corpus.R;
 import com.video.corpus.controllers.BaseActivity;
 import com.video.corpus.fragments.MoviesSynopsisFragment;
+import com.video.corpus.global.Utils;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.pojos.homecontent_model;
 
@@ -62,6 +65,12 @@ public class PlayerMoviesActivity extends BaseActivity {
     private int isfullscreen=0;
     private FrameLayout frameLayout;
     private ImageView imgShare, imgFav;
+    DefaultDataSourceFactory datasrcfatory;
+    private MediaSourceEventListener mediaSourceEventListener;
+    private ExtractorMediaSource.EventListener eventListener;
+    private Handler handler=new Handler();
+    private Handler handlermedia=new Handler();
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +79,24 @@ public class PlayerMoviesActivity extends BaseActivity {
         context=PlayerMoviesActivity.this;
         cc=new commonclass(context);
 
+
         gethomecontent();
         initiateviews();
+    }
+
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        showlogs("PLAYBACKResume","Resume"+cc.getplaybackId());
+        if(cc.getplaybackId()==0)
+        {
+            prepareplayer();
+
+            setfavdata();
+
+            loadfragment();
+        }
     }
 
     //initiate views
@@ -89,7 +114,7 @@ public class PlayerMoviesActivity extends BaseActivity {
         imgShare=findViewById(R.id.img_share);
         imgFav=findViewById(R.id.img_fav);
         consLikeLayout=findViewById(R.id.cons_like_layout);
-
+        txtPlayerException.setVisibility(View.GONE);
         prepareplayer();
 
         setfavdata();
@@ -119,10 +144,18 @@ public class PlayerMoviesActivity extends BaseActivity {
         DefaultBandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
         TrackSelection.Factory factory=new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector=new DefaultTrackSelector(factory);
-        DataSource.Factory datasrcfatory=new DefaultDataSourceFactory(context,
+         datasrcfatory=new DefaultDataSourceFactory(context,
                 Util.getUserAgent(context,getResources().getString(R.string.app_name)),bandwidthMeter);
-        MediaSource mediaSource=new ExtractorMediaSource.Factory(datasrcfatory)
-                .createMediaSource(Uri.parse(contenturl()));
+
+        //dynamic media source
+        MediaSource mediaSource = Utils.getInstance().buildMediaSource(Uri.parse(contenturl()),
+                Utils.getInstance().getExtension(contenturl()),
+                mediaSourceEventListener, eventListener, datasrcfatory,
+                handler, bandwidthMeter, context);
+
+        //default media source
+//         mediaSource = new ExtractorMediaSource.Factory(datasrcfatory)
+//                .createMediaSource(Uri.parse(contenturl()));
 
         player= ExoPlayerFactory.newSimpleInstance(context,trackSelector);
         player.addListener(new Player.EventListener() {
@@ -148,16 +181,25 @@ public class PlayerMoviesActivity extends BaseActivity {
                 {
                     progressBar.setVisibility(View.VISIBLE);
                     txtPlayerException.setVisibility(View.GONE);
+                    handlermedia.removeCallbacks(runnable);
                 }
                 else  if(playbackState==Player.STATE_READY)
                 {
                     txtPlayerException.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
+                    handlermedia.removeCallbacks(runnable);
                 }
                 else  if(playbackState==Player.STATE_IDLE)
                 {
-                    progressBar.setVisibility(View.GONE);
-                    txtPlayerException.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                     runnable=new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            txtPlayerException.setVisibility(View.VISIBLE);
+                        }
+                    };
+                    handlermedia.postDelayed(runnable,3000);
                 }
             }
 
@@ -194,12 +236,16 @@ public class PlayerMoviesActivity extends BaseActivity {
 
         player.prepare(mediaSource);
         player.setPlayWhenReady(true);
-
-
+        showlogs("PLAYBACKplayer","player");
+        startplaybackams();
         setplayercontrollers();
-
         simpleExoPlayerView.setPlayer(player);
     }
+
+
+
+
+
 
     //get home content
     private void gethomecontent()
@@ -251,9 +297,15 @@ public class PlayerMoviesActivity extends BaseActivity {
     public void onDestroy()
     {
         super.onDestroy();
-        if(player!=null)
-        {
+
+        showlogs("PLAYBACKDestroy","Destroy"+cc.getplaybackId());
+        stopplaybackams();
+        if (player != null) {
             player.release();
+        }
+        if(handlermedia!=null)
+        {
+            handler.removeCallbacks(runnable);
         }
     }
 
@@ -300,7 +352,7 @@ public class PlayerMoviesActivity extends BaseActivity {
     //load fragment
     private void loadfragment()
     {
-            com.video.corpus.global.Util.getInstance().fragmenttransaction(this,new MoviesSynopsisFragment(),
+            Utils.getInstance().fragmenttransaction(this,new MoviesSynopsisFragment(),
                     MoviesSynopsisFragment.class.getName(),false);
     }
 
@@ -315,5 +367,51 @@ public class PlayerMoviesActivity extends BaseActivity {
             imgFav.setImageResource(R.mipmap.fav_red);
         }
 
+    }
+
+
+    //send playback ams
+    private void sendplaybackams(String playbackaction)
+    {
+        if(cc.getplaybackId()==0)
+        {
+            cc.setplaybackId((models.get(cc.getContentClickpos()).getId()));
+        }
+        Utils.getInstance(). sendPlaybackAms(context,PLAYBACK_COMMAND_MOVIE,
+                cc.getplaybackId(),playbackaction);
+        showlogs("PLAYBACKaction",playbackaction+cc.getplaybackId());
+        if(playbackaction.equals(PLAYBACK_ACTION_STOP))
+        {
+            cc.setplaybackId(0);
+        }
+    }
+
+    //stop playback ams
+    private void stopplaybackams()
+    {
+        if(cc.getplaybackId()!=0)
+        {
+            sendplaybackams(PLAYBACK_ACTION_STOP);
+        }
+    }
+
+    //stop playback ams
+    private void startplaybackams()
+    {
+        sendplaybackams(PLAYBACK_ACTION_START);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        showlogs("PLAYBACKonback","PLAYBACKonback"+cc.getplaybackId());
+        stopplaybackams();
+    }
+
+    @Override
+    public void onfragmentclick() {
+        showlogs("PLAYBACKonfragmentclick","PLAYBACKonfragmentclick");
+        stopplaybackams();
     }
 }

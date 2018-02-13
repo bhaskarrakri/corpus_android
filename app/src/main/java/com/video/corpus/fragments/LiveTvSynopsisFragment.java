@@ -3,6 +3,8 @@ package com.video.corpus.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +19,10 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+import com.video.corpus.Interface.MediaSynopsisInterface;
 import com.video.corpus.R;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.media.PlayerLiveTvActivity;
-import com.video.corpus.media.PlayerMoviesActivity;
 import com.video.corpus.pojos.homecontent_model;
 
 import java.util.ArrayList;
@@ -44,6 +46,10 @@ public class LiveTvSynopsisFragment extends BaseFragment {
     private ProgressBar progressbar;
     private boolean isrelatedmovies=false;
     private RelativeLayout relException;
+    private MediaSynopsisInterface mediaSynopsisInterface;
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +60,17 @@ public class LiveTvSynopsisFragment extends BaseFragment {
         gethomecontent();
         initViews();
 
+
+
         return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mediaSynopsisInterface=(MediaSynopsisInterface) getActivity();
     }
 
     //initiating views
@@ -186,7 +202,7 @@ public class LiveTvSynopsisFragment extends BaseFragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        mediaSynopsisInterface.onfragmentclick();
                         if(isnotempty(String.valueOf(v.getId())))
                         {
                             cc.setContentClickpos((v.getId()));
@@ -205,13 +221,9 @@ public class LiveTvSynopsisFragment extends BaseFragment {
                             setlivecontent(homecontent_models,cc);
                         }
 
-                        Intent intent;
-
-                             intent=new Intent(context, PlayerLiveTvActivity.class);
-
-
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                                Intent intent=new Intent(context, PlayerLiveTvActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
                     }
                 });
             }

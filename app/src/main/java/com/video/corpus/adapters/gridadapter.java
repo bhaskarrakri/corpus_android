@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.video.corpus.Interface.ItemclickListener;
 import com.video.corpus.R;
-import com.video.corpus.global.Util;
+import com.video.corpus.global.Utils;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.pojos.homecontent_model;
 import java.util.ArrayList;
@@ -75,14 +75,14 @@ public class gridadapter extends RecyclerView.Adapter<gridadapter.MyViewHolder>
         RelativeLayout.LayoutParams layoutParams;
         if(islivetv)
         {
-            layoutParams=new RelativeLayout.LayoutParams((Util.getInstance().getScreenWidth()/2)-margin,
-                    (Util.getInstance().getScreenWidth()/2)-margin);
+            layoutParams=new RelativeLayout.LayoutParams((Utils.getInstance().getScreenWidth()/2)-margin,
+                    (Utils.getInstance().getScreenWidth()/2)-margin);
 
         }
         else
         {
-            layoutParams=new RelativeLayout.LayoutParams((Util.getInstance().getScreenWidth()/2)-margin,
-                    (int)(((Util.getInstance().getScreenWidth()/2)*aspectratio_movies))-margin);
+            layoutParams=new RelativeLayout.LayoutParams((Utils.getInstance().getScreenWidth()/2)-margin,
+                    (int)(((Utils.getInstance().getScreenWidth()/2)*aspectratio_movies))-margin);
         }
 
 

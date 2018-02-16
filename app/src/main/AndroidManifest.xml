@@ -91,7 +91,10 @@
         <activity
             android:name=".media.PlayerMoviesActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
-        <activity android:name=".controllers.LoginActivity"></activity>
+        <activity android:name=".controllers.LoginActivity" />
+        <activity
+            android:name=".media.PlayerCatchupActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </application>
 
 </manifest>

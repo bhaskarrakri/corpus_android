@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.video.corpus.controllers.BaseActivity;
 import com.video.corpus.global.commonclass;
@@ -440,7 +442,7 @@ public class HomeFragment extends BaseFragment {
             view=layoutInflater.inflate(R.layout.content_layout,nullParent);
             view.setTag(homecontent_models.get(i));
             ImageView imageView= view.findViewById(R.id.imgview);
-            Picasso.with(context).load(homecontent_models.get(i).getImage()).placeholder(R.mipmap.placeholder_crousel).error(R.mipmap.ic_launcher).into(imageView);
+            Picasso.with(context).load(homecontent_models.get(i).getImage()).placeholder(R.mipmap.placeholder_crousel).error(R.mipmap.ic_error_image).into(imageView);
             imageView.setLayoutParams(new LinearLayout.LayoutParams(getScreenWidth()/width_num,(int)((getScreenWidth()/width_num)*(aspectratio_local))));
             TextView textView= view.findViewById(R.id.txtview);
             textView.setText(homecontent_models.get(i).getName());
@@ -466,7 +468,7 @@ public class HomeFragment extends BaseFragment {
                         showlogs("islivetv",""+v.getTag());
                         cc.setIslivetv(Boolean.parseBoolean((String)v.getTag()));
                     }
-                    sethomecontent(homecontent_models,cc);
+                    cc.setHomeContent(converttoGSON(homecontent_models));
                     Intent intent;
                     if (cc.islivetv())
                     {
@@ -547,7 +549,7 @@ public class HomeFragment extends BaseFragment {
     private void moreoptions_homecontent(boolean islivetv,ArrayList<homecontent_model> data)
     {
 
-        sethomecontent(data,cc);
+        cc.setHomeContent(converttoGSON(data));
         cc.setIslivetv(islivetv);
         util.fragmenttransaction((AppCompatActivity) activity,new HomeContentFragment(),
                 HomeContentFragment.class.getName(),true);

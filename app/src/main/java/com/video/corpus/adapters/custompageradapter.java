@@ -32,7 +32,7 @@ public class custompageradapter  extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.carousel_layout, collection, false);
         ImageView imageView= layout.findViewById(R.id.carousel_image);
-        Picasso.with(mContext).load(carousel_models.get(position).getCarousel_url()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.placeholder_crousel).into(imageView);
+        Picasso.with(mContext).load(carousel_models.get(position).getCarousel_url()).error(R.mipmap.ic_error_image).placeholder(R.mipmap.placeholder_crousel).into(imageView);
         collection.addView(layout);
         return layout;
     }

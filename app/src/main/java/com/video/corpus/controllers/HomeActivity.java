@@ -21,6 +21,8 @@ import com.video.corpus.global.Utils;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.network.AMSRequest;
 import com.video.corpus.network.NetworkRequest;
+import com.video.corpus.pojos.homecontent_model;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,9 +36,9 @@ public class HomeActivity extends BaseActivity {
     private Response_string<String> deviceconfigresponse;
     private Context context;
     private commonclass cc;
-    private  Handler  handler;
-    private Runnable runnable;
-    private Response_string<String> subscriberesponse;
+    private  Handler  handler,handlerupdate;
+    private Runnable runnable,runnableupdate;
+    private Response_string<String> subscriberesponse,cmdmanageresponse,livetvresponse,moviesresponse;
     private ArrayList<String> params;
 
     @Override
@@ -57,14 +59,12 @@ public class HomeActivity extends BaseActivity {
              new NetworkRequest(context, url, params, subscriberesponse).execute();
          }
 
-
-        showlogs("master123","master123");
-        showlogs("branch123","branch123");
          if(isnotempty(cc.getSessioId()))
          {
              showlogs("session Id",cc.getSessioId());
           //   readresponse();
              deviceconfig();
+             Content_Update_START();
          }
 
 
@@ -241,6 +241,24 @@ public class HomeActivity extends BaseActivity {
     }
 
 
+    //update content check
+    private void Content_Update_START()
+    {
+        handlerupdate=new Handler();
+        runnableupdate=new Runnable() {
+            @Override
+            public void run() {
+
+                setparams();
+                String url=APP_SERVER_COMB+cc.getSessioId()+cmdmaanger_url;
+                new NetworkRequest(context, url, params, cmdmanageresponse).execute();
+                handlerupdate.postDelayed(runnableupdate,convertsectomins(cmdupdateinterval));
+            }
+        };
+        handlerupdate.postDelayed(runnableupdate,convertsectomins(cmdupdateinterval));
+    }
+
+
     //device config
     private void deviceconfig()
     {
@@ -269,6 +287,39 @@ public class HomeActivity extends BaseActivity {
                 }
             }
         };
+
+        cmdmanageresponse= new Response_string<String>() {
+            @Override
+            public void readResponse(String res) {
+                showlogs("cmdmangagerresponse", res);
+                if (!TextUtils.isEmpty(res)) {
+                    loadcmdmanageinfo(res);
+                }
+            }
+        };
+
+
+        livetvresponse = new Response_string<String>() {
+            @Override
+            public void readResponse(String res) {
+                showlogs("live tv _response", res);
+                if (!TextUtils.isEmpty(res)) {
+                    loadlivetvcontent(res);
+                }
+            }
+        };
+
+
+        moviesresponse = new Response_string<String>() {
+            @Override
+            public void readResponse(String res) {
+                showlogs("movies _response", res);
+                if (!TextUtils.isEmpty(res)) {
+                    loadMoviecontent(res);
+                }
+            }
+        };
+
 
     }
 
@@ -326,6 +377,7 @@ public class HomeActivity extends BaseActivity {
             if(isnotempty(cc.gettrapurl()) && cc.getamstimeinterval()!=0)
             {
                 AMS_START();
+
             }
 
         }
@@ -342,6 +394,10 @@ public class HomeActivity extends BaseActivity {
         if(handler!=null)
         {
             handler.removeCallbacks(runnable);
+        }
+        if(handlerupdate!=null)
+        {
+            handlerupdate.removeCallbacks(runnableupdate);
         }
 
     }
@@ -364,4 +420,344 @@ public class HomeActivity extends BaseActivity {
             }
         }
     }
+
+
+    //load subscriber info
+    private void loadcmdmanageinfo(String  res)
+    {
+        if(readstatuscode(res,context))
+        {
+            try {
+               JSONObject jsonObject=new JSONObject(res);
+               JSONArray jsonArray_cmd=jsonObject.optJSONArray("command");
+               if(jsonArray_cmd.length()>0)
+               {
+                   for(int i=0;i<jsonArray_cmd.length();i++)
+                   {
+                       JSONObject  jsonObjectLoop=jsonArray_cmd.optJSONObject(i);
+                       if(isnotempty(jsonObjectLoop.toString()))
+                       {
+                           if(jsonObjectLoop.optString("command","").equals(DATA_UPDATE)) {
+                               JSONObject jsonObject_Loop_arg = jsonObjectLoop.optJSONObject("argument");
+                               if (isnotempty(jsonObject_Loop_arg.toString()))
+                               {
+                                   if(jsonObject_Loop_arg.optString("updateType","").equals(CHANNEL_UPDATE))
+                                   {
+                                       showlogs("apiliveTV","apiliveTV");
+                                       livetvapireq();
+                                   }
+                                   if(jsonObject_Loop_arg.optString("updateType","").equals(MOVIE_UPDATE))
+                                   {
+                                       showlogs("apivod","apivod");
+                                       movieapireq();
+                                   }
+                               }
+                           }
+                       }
+
+               }
+               }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //livetv asyncall
+    private void livetvapireq()
+    {
+        setparams();
+        String url = APP_SERVER_COMB + cc.getSessioId() + livetv_url_prm;
+        showlogs("livetv_url", url);
+        new NetworkRequest(context, url, params, livetvresponse).execute();
+    }
+
+    //Movies asyncall
+    private void movieapireq()
+    {
+        setparams();
+        String url=APP_SERVER_COMB+cc.getSessioId()+movies_url_prm;
+        showlogs("movies_url",url);
+        new NetworkRequest(context, url, params, moviesresponse).execute();
+    }
+
+
+
+    //horizontal scroll view for content
+    private void loadlivetvcontent(String res)
+    {
+        try{
+            ArrayList<homecontent_model> livetvmodels = new ArrayList<>();
+            JSONObject jsonObject_main=new JSONObject(res);
+            JSONArray jsonArray=jsonObject_main.optJSONArray("Channel");
+            if(isnotempty(jsonArray.toString()))
+            {
+                for(int i=0;i<jsonArray.length();i++)
+                {
+                    JSONObject object_loop=(jsonArray.optJSONObject(i));
+                    if(isnotempty(object_loop.toString()))
+                    {
+                        homecontent_model data=new homecontent_model();
+                        data.setServiceassetid(object_loop.optInt("serviceassetid",0));
+                        data.setName(object_loop.getString("name"));
+                        //setting image content
+                        JSONArray jsonArray_image=object_loop.getJSONArray("image");
+                        if(isnotempty(jsonArray_image.toString()))
+                        {
+                            for(int j=0;j<jsonArray_image.length();j++)
+                            {
+                                String image_url;
+                                JSONObject jsonObject_loop_image=jsonArray_image.optJSONObject(j);
+                                if(isnotempty(jsonObject_loop_image.toString()))
+                                {
+                                    String name_img=jsonObject_loop_image.optString("name");
+                                    if(name_img.length()>0 && name_img.equals("Icon"))
+                                    {
+                                        image_url=jsonObject_loop_image.optString("url");
+                                        if(isnotempty(image_url))
+                                        {
+                                            data.setImage(image_url);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        image_url=jsonObject_loop_image.optString("url");
+                                        if(isnotempty(image_url))
+                                        {
+                                            data.setImage(image_url);
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                        JSONArray jsonArray_media = null;
+                        //setting media content
+                        if(object_loop.has("streamProfile"))
+                        {
+                            jsonArray_media=object_loop.optJSONArray("streamProfile");
+                        }
+                        else if(object_loop.has("playbackStreamProfile"))
+                        {
+                            jsonArray_media=object_loop.optJSONArray("playbackStreamProfile");
+                        }
+
+                        if(jsonArray_media!=null)
+                        {
+                            if((isnotempty(jsonArray_media.toString())))
+                            {
+                                for(int j=0;j<jsonArray_media.length();j++)
+                                {
+                                    JSONObject jsonObject_media=jsonArray_media.optJSONObject(j);
+                                    if(isnotempty(jsonObject_media.toString()))
+                                    {
+                                        JSONArray jsonArray_urltype=jsonObject_media.optJSONArray("urltype");
+                                        if(isnotempty(jsonArray_urltype.toString()))
+                                        {
+                                            for(int k=0;k<jsonArray_urltype.length();k++)
+                                            {
+                                                JSONObject jsonObject_urltype=jsonArray_urltype.optJSONObject(k);
+                                                if(isnotempty(jsonObject_urltype.toString()))
+                                                {
+                                                    data.setMediacontent(jsonObject_urltype.optString("value",""));
+                                                    showlogs("url_data",data.getMediacontent());
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
+
+                        //set category id
+                        JSONArray jsonArray_catid=object_loop.optJSONArray("categoryId");
+                        for(int l=0;l<jsonArray_catid.length();l++)
+                        {
+                            JSONObject jsonObject_catloop=jsonArray_catid.optJSONObject(l);
+                            data.setCategoryId(jsonObject_catloop.optInt("id",0));
+                            if(isnotempty(String.valueOf(jsonObject_catloop.optInt("id"))))
+                            {
+                                break;
+                            }
+                        }
+
+                        //set id
+                        data.setId(object_loop.optInt("id",0));
+
+                        //set serviceassetid
+                        data.setServiceassetid(object_loop.optInt("serviceassetid",0));
+
+
+                        //set like , fav data
+                        data.setFavourite(object_loop.optBoolean("isFavourite",false));
+                        data.setLikeCount(object_loop.optInt("likeCount",0));
+                        livetvmodels.add(data);
+                    }
+                }
+            }
+            if(livetvmodels.size()>0) {
+                cc.setlivetvContent(converttoGSON(livetvmodels));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    //horizontal scroll view for content
+    private void loadMoviecontent(String res)
+    {
+        try{
+            ArrayList<homecontent_model> vodmodels = new ArrayList<>();
+            JSONObject jsonObject_main=new JSONObject(res);
+            JSONArray jsonArray=jsonObject_main.optJSONArray("movie");
+
+            if(isnotempty(jsonArray.toString()))
+            {
+                for(int i=0;i<jsonArray.length();i++)
+                {
+                    JSONObject object_loop=(jsonArray.optJSONObject(i));
+                    if(isnotempty(object_loop.toString()))
+                    {
+                        homecontent_model data=new homecontent_model();
+                        data.setServiceassetid(object_loop.optInt("serviceassetid",0));
+                        data.setName(object_loop.getString("name"));
+                        //setting image content
+                        JSONArray jsonArray_image=object_loop.getJSONArray("image");
+                        if(isnotempty(jsonArray_image.toString()))
+                        {
+                            for(int j=0;j<jsonArray_image.length();j++)
+                            {
+                                String image_url;
+                                JSONObject jsonObject_loop_image=jsonArray_image.optJSONObject(j);
+                                if(isnotempty(jsonObject_loop_image.toString()))
+                                {
+                                    String name_img=jsonObject_loop_image.optString("name");
+                                    if(name_img.length()>0 && name_img.equals("Icon"))
+                                    {
+                                        image_url=jsonObject_loop_image.optString("url");
+                                        if(isnotempty(image_url))
+                                        {
+                                            data.setImage(image_url);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        image_url=jsonObject_loop_image.optString("url");
+                                        if(isnotempty(image_url))
+                                        {
+                                            data.setImage(image_url);
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                        JSONArray jsonArray_media = null;
+                        //setting media content
+                        if(object_loop.has("streamProfile"))
+                        {
+                            jsonArray_media=object_loop.optJSONArray("streamProfile");
+                        }
+                        else if(object_loop.has("playbackStreamProfile"))
+                        {
+                            jsonArray_media=object_loop.optJSONArray("playbackStreamProfile");
+                        }
+
+                        if(jsonArray_media!=null)
+                        {
+                            if((isnotempty(jsonArray_media.toString())))
+                            {
+                                for(int j=0;j<jsonArray_media.length();j++)
+                                {
+                                    JSONObject jsonObject_media=jsonArray_media.optJSONObject(j);
+                                    if(isnotempty(jsonObject_media.toString()))
+                                    {
+                                        JSONArray jsonArray_urltype=jsonObject_media.optJSONArray("urltype");
+                                        if(isnotempty(jsonArray_urltype.toString()))
+                                        {
+                                            for(int k=0;k<jsonArray_urltype.length();k++)
+                                            {
+                                                JSONObject jsonObject_urltype=jsonArray_urltype.optJSONObject(k);
+                                                if(isnotempty(jsonObject_urltype.toString()))
+                                                {
+                                                    data.setMediacontent(jsonObject_urltype.optString("value",""));
+                                                    showlogs("url_data",data.getMediacontent());
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
+                        //meta data content
+                        if(object_loop.has("metaData"))
+                        {
+                            JSONObject jsonObject_metadata=object_loop.optJSONObject("metaData");
+                            if(isnotempty(jsonObject_metadata.toString()))
+                            {
+                                data.setIsmetadata(true);
+                                data.setMoviereleaseyear(jsonObject_metadata.optString("YEAROFRELEASE", ""));
+                                data.setMoviesynopsis(jsonObject_metadata.optString("SYNOPSIS", ""));
+                                data.setMovieruntime(jsonObject_metadata.optString("RUNTIME", ""));
+                                data.setMoviecastcrew(jsonObject_metadata.optString("CASTCREW",""));
+                                data.setMoviecategory(jsonObject_metadata.optString("GENRE", ""));
+                            }
+                            else
+                            {
+                                data.setIsmetadata(false);
+                            }
+                        }
+                        else
+                        {
+                            data.setIsmetadata(false);
+                        }
+
+                        //set category id
+                        JSONArray jsonArray_catid=object_loop.optJSONArray("categoryId");
+                        for(int l=0;l<jsonArray_catid.length();l++)
+                        {
+                            JSONObject jsonObject_catloop=jsonArray_catid.optJSONObject(l);
+                            data.setCategoryId(jsonObject_catloop.optInt("id",0));
+                            if(isnotempty(String.valueOf(jsonObject_catloop.optInt("id"))))
+                            {
+                                break;
+                            }
+                        }
+
+                        //set id
+                        data.setId(object_loop.optInt("id",0));
+
+                        //set serviceassetid
+                        data.setServiceassetid(object_loop.optInt("serviceassetid",0));
+
+
+                        //set like , fav data
+                        data.setFavourite(object_loop.optBoolean("isFavourite",false));
+                        data.setLikeCount(object_loop.optInt("likeCount",0));
+                        vodmodels.add(data);
+                    }
+                }
+            }
+
+            if(vodmodels.size()>0) {
+                cc.setmovieContent(converttoGSON(vodmodels));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 }

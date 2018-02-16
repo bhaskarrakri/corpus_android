@@ -104,7 +104,7 @@ public class MoviesFragment extends BaseFragment  implements ItemclickListener {
     @Override
     public void onitemclcik(int pos) {
         cc.setContentClickpos(pos);
-        setmoviecontent(models,cc);
+        cc.setmovieContent(converttoGSON(models));
         cc.setIshomecontent(false);
         Intent intent=new Intent(context, PlayerMoviesActivity.class);
         startActivity(intent);
@@ -287,7 +287,7 @@ public class MoviesFragment extends BaseFragment  implements ItemclickListener {
 
     private void Loadgridview() {
         if(models.size()>0) {
-            setmoviecontent(models, cc);
+            cc.setmovieContent(converttoGSON(models));
             gridviewadapter();
         }
         else

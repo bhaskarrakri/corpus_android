@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +120,7 @@ public class CatchUpFragment extends BaseFragment implements ItemclickListener {
         catchupresponse = new Response_string<String>() {
             @Override
             public void readResponse(String res) {
-                showlogs("live tv _response", res);
+                showlogs("catchup _response", res);
                 if (!TextUtils.isEmpty(res)) {
                     loadcontent(res);
                 }
@@ -148,6 +149,7 @@ public class CatchUpFragment extends BaseFragment implements ItemclickListener {
                         homecontent_model data=new homecontent_model();
 
                         data.setName(object_loop.getString("programName"));
+                        data.setServiceassetid(object_loop.optInt("serviceAssetId",0));
                         data.setImage(object_loop.optString("image",""));
                         data.setProgramDescription(object_loop.optString("programDescription",""));
                         data.setProgramId(object_loop.optString("programId",""));
@@ -165,7 +167,7 @@ public class CatchUpFragment extends BaseFragment implements ItemclickListener {
 
     private void Loadgridview() {
         if(models.size()>0) {
-            setcatchupcontent(models, cc);
+            cc.setcatchupContent(converttoGSON(models));
             gridviewadapter();
         }
         else

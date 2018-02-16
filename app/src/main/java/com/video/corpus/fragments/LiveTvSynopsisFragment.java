@@ -187,7 +187,7 @@ public class LiveTvSynopsisFragment extends BaseFragment {
                 view=layoutInflater.inflate(R.layout.content_layout,nullParent);
                 view.setTag(homecontent_models.get(i));
                 ImageView imageView= view.findViewById(R.id.imgview);
-                Picasso.with(context).load(homecontent_models.get(i).getImage()).placeholder(R.mipmap.placeholder_crousel).error(R.mipmap.ic_launcher).into(imageView);
+                Picasso.with(context).load(homecontent_models.get(i).getImage()).placeholder(R.mipmap.placeholder_crousel).error(R.mipmap.ic_error_image).into(imageView);
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(getScreenWidth()/width_num,(int)((getScreenWidth()/width_num)*(aspectratio))));
                 TextView textView= view.findViewById(R.id.txtview);
                 textView.setText(homecontent_models.get(i).getName());
@@ -214,11 +214,11 @@ public class LiveTvSynopsisFragment extends BaseFragment {
                         }
                         if(cc.ishomecontent())
                         {
-                            sethomecontent(homecontent_models,cc);
+                            cc.setHomeContent(converttoGSON(homecontent_models));
                         }
                         else
                         {
-                            setlivecontent(homecontent_models,cc);
+                            cc.setlivetvContent(converttoGSON(homecontent_models));
                         }
 
                                 Intent intent=new Intent(context, PlayerLiveTvActivity.class);

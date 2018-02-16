@@ -12,6 +12,7 @@ public interface Constants {
     int recyclerview_columns=2;
     int recyclerview_columns_catcup=1;
      int RC_SIGN_IN=100;
+    int cmdupdateinterval=10;
    int amsdeftimeinterval = 60;
     String AMS_ACTIVE="ALIVE";
     String AMS_INACTIVE="LOGOUT";
@@ -78,6 +79,20 @@ public interface Constants {
     String device_config_url="/deviceConfig";
 
     String subscriber_info_url="/subscriberinfo";
+
+    String cmdmaanger_url="/cmdManager";
+
+    String catchup_event_url="/catchupevents/videos/";
+    String prgmId="?programId=";
+    String FranchiseId="18204";
+
+
+
+    String DATA_UPDATE="DATA_UPDATE";
+    String CHANNEL_UPDATE="CHANNEL_UPDATE";
+    String MOVIE_UPDATE="MOVIE_UPDATE";
+
+
 
    // String VIDEO_URL="http://demo.corpus.com/demovideo/TEN_GOLF_HD.mp4";
     String adsconstant_LEADER="LEADERBOARDAD";

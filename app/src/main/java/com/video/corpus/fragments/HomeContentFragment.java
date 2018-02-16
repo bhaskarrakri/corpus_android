@@ -108,7 +108,7 @@ public class HomeContentFragment extends BaseFragment  implements ItemclickListe
     @Override
     public void onitemclcik(int pos) {
         cc.setContentClickpos(pos);
-        sethomecontent(models,cc);
+        cc.setHomeContent(converttoGSON(models));
         Intent intent;
         if(cc.islivetv())
         {

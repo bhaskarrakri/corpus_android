@@ -32,6 +32,8 @@
         android:textSize="@dimen/sp_twenty"
         app:layout_constraintEnd_toEndOf="@id/imgview"
         app:layout_constraintBottom_toBottomOf="@id/imgview"
+        android:layout_marginEnd="@dimen/dp_two"
+        android:layout_marginRight="@dimen/dp_two"
         android:padding="@dimen/dp_ten"
         />
 

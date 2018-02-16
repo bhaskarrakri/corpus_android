@@ -66,7 +66,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         facebooklogin();
 
         ImageView signInButton = findViewById(R.id.gplus);
-     //   signInButton.setSize(SignInButton.SIZE_STANDARD);
         ImageView fbicon = findViewById(R.id.fblogin);
         facebookLoginButton=findViewById(R.id.login_button);
 

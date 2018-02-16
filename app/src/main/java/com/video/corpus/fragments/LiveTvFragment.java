@@ -105,7 +105,7 @@ public class LiveTvFragment extends BaseFragment  implements ItemclickListener {
     @Override
     public void onitemclcik(int pos) {
         cc.setContentClickpos(pos);
-        setlivecontent(models,cc);
+        cc.setlivetvContent(converttoGSON(models));
         cc.setIshomecontent(false);
         Intent intent=new Intent(context, PlayerLiveTvActivity.class);
         startActivity(intent);
@@ -264,7 +264,7 @@ public class LiveTvFragment extends BaseFragment  implements ItemclickListener {
 
     private void Loadgridview() {
         if(models.size()>0) {
-            setlivecontent(models, cc);
+            cc.setlivetvContent(converttoGSON(models));
             gridviewadapter();
         }
         else

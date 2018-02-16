@@ -133,35 +133,35 @@ public class BaseFragment extends Fragment implements Constants {
         }
     }
 
-    //set content to sharedpref
-    public void sethomecontent(ArrayList<homecontent_model> data,commonclass cc)
-    {
-        Gson gson = new Gson();
-        cc.setHomeContent(gson.toJson(data));
-    }
-
-
-    //set content to sharedpref
-    public void setlivecontent(ArrayList<homecontent_model> data,commonclass cc)
-    {
-        Gson gson = new Gson();
-        cc.setlivetvContent(gson.toJson(data));
-    }
-
-
-    //set content to sharedpref
-    public void setmoviecontent(ArrayList<homecontent_model> data,commonclass cc)
-    {
-        Gson gson = new Gson();
-        cc.setmovieContent(gson.toJson(data));
-    }
-
-    //set content to sharedpref
-    public void setcatchupcontent(ArrayList<homecontent_model> data,commonclass cc)
-    {
-        Gson gson = new Gson();
-        cc.setcatchupContent(gson.toJson(data));
-    }
+//    //set content to sharedpref
+//    public void sethomecontent(ArrayList<homecontent_model> data,commonclass cc)
+//    {
+//        Gson gson = new Gson();
+//        cc.setHomeContent(gson.toJson(data));
+//    }
+//
+//
+//    //set content to sharedpref
+//    public void setlivecontent(ArrayList<homecontent_model> data,commonclass cc)
+//    {
+//        Gson gson = new Gson();
+//        cc.setlivetvContent(gson.toJson(data));
+//    }
+//
+//
+//    //set content to sharedpref
+//    public void setmoviecontent(ArrayList<homecontent_model> data,commonclass cc)
+//    {
+//        Gson gson = new Gson();
+//        cc.setmovieContent(gson.toJson(data));
+//    }
+//
+//    //set content to sharedpref
+//    public void setcatchupcontent(ArrayList<homecontent_model> data,commonclass cc)
+//    {
+//        Gson gson = new Gson();
+//        cc.setcatchupContent(gson.toJson(data));
+//    }
 
 
     protected boolean checkpremium()
@@ -182,6 +182,20 @@ public class BaseFragment extends Fragment implements Constants {
         {
             Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    public String converttoGSON(ArrayList<homecontent_model> data)
+    {
+
+        String res="";
+        if(isnotempty(data.toString()))
+        {
+            Gson gson=new Gson();
+            res= (String.valueOf(gson.toJson(data)));
+        }
+        return res;
+
 
     }
 

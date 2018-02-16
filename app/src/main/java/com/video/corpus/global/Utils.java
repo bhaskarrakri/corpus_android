@@ -38,7 +38,9 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 ///**
 // * Created by Bhaskar.c on 1/2/2018.
@@ -193,6 +195,17 @@ public class Utils {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static String getFormattedDDMMYYYY (long timestamp) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat ("dd-MM-yyyy", Locale.US);
+            return dateFormat.format (new Date (timestamp));
+        } catch (Exception e) {
+            e.printStackTrace ();
+        }
+        return "";
     }
 
 }

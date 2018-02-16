@@ -2,7 +2,6 @@ package com.video.corpus.global;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.video.corpus.R;
 
 ///**
@@ -13,7 +12,6 @@ public class commonclass {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-
 
 
     public boolean islivetv() {
@@ -55,6 +53,7 @@ public class commonclass {
     }
 
     public void setlivetvContent(String homeContent) {
+
         editor.putString("livetvContent",homeContent).apply();
     }
 
@@ -79,7 +78,7 @@ public class commonclass {
     }
 
     public void setContentClickpos(int contentClickpos) {
-        editor.putInt("contentclickpos",contentClickpos);
+        editor.putInt("contentclickpos",contentClickpos).apply();
     }
 
 
@@ -155,5 +154,8 @@ public class commonclass {
     {
         editor.putInt("playbackId",playbackId).apply();
     }
+
+
+
 
 }

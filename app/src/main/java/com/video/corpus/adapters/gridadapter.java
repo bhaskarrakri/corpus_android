@@ -70,7 +70,7 @@ public class gridadapter extends RecyclerView.Adapter<gridadapter.MyViewHolder>
         homecontent_model data = models.get(position);
         holder.title.setText(data.getName());
         Picasso.with(context).load(models.get(position).getImage())
-                .error(R.mipmap.ic_launcher).placeholder(R.mipmap.placeholder_crousel).into(holder.imageView);
+                .error(R.mipmap.ic_error_image).placeholder(R.mipmap.placeholder_crousel).into(holder.imageView);
 
         RelativeLayout.LayoutParams layoutParams;
         if(islivetv)

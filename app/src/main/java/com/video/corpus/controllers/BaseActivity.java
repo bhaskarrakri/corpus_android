@@ -16,17 +16,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.video.corpus.Interface.Constants;
 import com.video.corpus.Interface.MediaSynopsisInterface;
 import com.video.corpus.Interface.actionbarcustom;
 import com.video.corpus.R;
 import com.video.corpus.global.BottomNavigationViewBehavior;
 import com.video.corpus.global.commonclass;
+import com.video.corpus.pojos.homecontent_model;
 
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -238,7 +242,6 @@ public class BaseActivity extends AppCompatActivity implements actionbarcustom,C
     public boolean readstatuscode(String res,Context context)
     {
         boolean result=false;
-        commonclass cc=new commonclass(context);
         try{
             JSONObject jsonObjectMain=new JSONObject(res);
             JSONObject jsonObject_status=jsonObjectMain.optJSONObject("responseStatus");
@@ -253,5 +256,20 @@ public class BaseActivity extends AppCompatActivity implements actionbarcustom,C
             e.printStackTrace();
         }
         return result;
+    }
+
+
+    public String converttoGSON(ArrayList<homecontent_model> data)
+    {
+
+        String res="";
+        if(isnotempty(data.toString()))
+        {
+            Gson gson=new Gson();
+            res= (String.valueOf(gson.toJson(data)));
+        }
+        return res;
+
+
     }
 }

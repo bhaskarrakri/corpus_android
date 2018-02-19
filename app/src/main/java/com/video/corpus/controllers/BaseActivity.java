@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,10 @@ import com.video.corpus.Interface.Constants;
 import com.video.corpus.Interface.MediaSynopsisInterface;
 import com.video.corpus.Interface.actionbarcustom;
 import com.video.corpus.R;
+import com.video.corpus.fragments.MoviesSynopsisFragment;
+import com.video.corpus.fragments.MyprofileFragment;
 import com.video.corpus.global.BottomNavigationViewBehavior;
+import com.video.corpus.global.Utils;
 import com.video.corpus.global.commonclass;
 import com.video.corpus.pojos.homecontent_model;
 
@@ -143,6 +147,39 @@ public class BaseActivity extends AppCompatActivity implements actionbarcustom,C
             View  toolbar=findViewById(R.id.toolbar);
             TextView toolbartext= toolbar.findViewById(R.id.Txt_title);
             toolbartext.setText(res);
+        }
+    }
+
+
+    void toolbarsearch(final Context context)
+    {
+
+        commonclass cc=new commonclass(context);
+
+        View  toolbar=findViewById(R.id.toolbar);
+        ImageView img_search= toolbar.findViewById(R.id.img_search);
+        ImageView img_profile= toolbar.findViewById(R.id.img_profile);
+
+        if(cc.getSessioId().length()<=0)
+        {
+            img_profile.setVisibility(View.GONE);
+        }
+        if(context!=null)
+        {
+            img_search.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showtaost(context,"search");
+                }
+            });
+            img_profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Utils.getInstance().fragmenttransaction((AppCompatActivity) context,new MyprofileFragment(),
+                                MyprofileFragment.class.getName(),false);
+
+                }
+            });
         }
     }
 
@@ -272,4 +309,6 @@ public class BaseActivity extends AppCompatActivity implements actionbarcustom,C
 
 
     }
+
+
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cons_lay"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/sp_thirty"
+        android:id="@+id/txt_title"
+        android:layout_marginLeft="@dimen/dp_ten"
+        android:layout_marginStart="@dimen/dp_ten"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text=""
+        android:maxLines="1"
+        android:ellipsize="end"
+         />
+
+    <TextView
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginTop="@dimen/dp_ten"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/sp_twenty"
+        android:id="@+id/txt_value"
+        android:layout_marginLeft="@dimen/dp_four"
+        android:layout_marginStart="@dimen/dp_four"
+        app:layout_constraintLeft_toLeftOf="@+id/txt_title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title"
+        android:text=""
+        />
+
+    <View
+        android:layout_marginTop="@dimen/dp_four"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_value"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_one"
+        android:background="@color/colorAccent"/>
+
+</android.support.constraint.ConstraintLayout>

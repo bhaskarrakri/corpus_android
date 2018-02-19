@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cons_lay"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/sp_twenty"
+        android:id="@+id/txt_packagename"
+        android:layout_margin="@dimen/dp_ten"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text=""
+        android:maxLines="1"
+        android:ellipsize="end"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/sp_twenty"
+        android:id="@+id/txt_expiry"
+        android:layout_marginTop="@dimen/dp_ten"
+        app:layout_constraintLeft_toLeftOf="@+id/txt_packagename"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_packagename"
+        android:text=""
+        android:maxLines="1"
+        android:ellipsize="end"
+        />
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/sp_twenty"
+        android:id="@+id/txt_status"
+        app:layout_constraintBottom_toTopOf="@+id/txt_expiry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_packagename"
+        android:text=""
+        android:maxLines="1"
+        android:ellipsize="end"
+        />
+
+    <View
+        android:layout_marginTop="@dimen/dp_four"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_expiry"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_one"
+        android:background="@color/colorAccent"/>
+
+</android.support.constraint.ConstraintLayout>

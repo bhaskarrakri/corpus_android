@@ -52,4 +52,32 @@
     <string name="emptyfields">Enter Empty Fields</string>
     <string name="emptyspace">Spaces Not Allowed</string>
     <string name="pressexit">Press again back to exit</string>
+
+    <string-array name="settings_array">
+        <item>Reminders</item>
+        <item>Recently Watched</item>
+        <item>Favourites</item>
+        <item>TV Guide</item>
+        <item>TV Remote</item>
+        <item>Logout</item>
+        </string-array>
+
+    <string-array name="profile_array">
+        <item>Name</item>
+        <item>Mobile</item>
+        <item>Email Id</item>
+    </string-array>
+
+    //settings list
+    <string name="Reminders">Reminders</string>
+    <string name="RecentlyWatched">Recently Watched</string>
+    <string name="Favourites">Favourites</string>
+    <string name="TVGuide">TV Guide</string>
+    <string name="TVRemote">TV Remote</string>
+    <string name="Logout">Logout</string>
+    <string name="activetill">Active Till </string>
+    <string name="active">active</string>
+    <string name="inactive">inactive</string>
+    <string name="mypackages">My Packages</string>
+
 </resources>

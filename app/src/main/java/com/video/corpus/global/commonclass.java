@@ -156,6 +156,14 @@ public class commonclass {
     }
 
 
+    public  String getprofileinfo()
+    {
+        return  sharedPreferences.getString("profileinfo","");
+    }
+    public  void setprofileinfo(String profileinfo)
+    {
+        editor.putString("profileinfo",profileinfo).apply();
+    }
 
 
 }

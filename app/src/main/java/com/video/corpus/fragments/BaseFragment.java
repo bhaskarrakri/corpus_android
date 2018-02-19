@@ -24,6 +24,7 @@ import com.video.corpus.google.LargeBannerView;
 import com.video.corpus.pojos.homecontent_model;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -197,6 +198,27 @@ public class BaseFragment extends Fragment implements Constants {
         return res;
 
 
+    }
+
+
+    //read status code
+    public boolean readstatuscode(String res,Context context)
+    {
+        boolean result=false;
+        try{
+            JSONObject jsonObjectMain=new JSONObject(res);
+            JSONObject jsonObject_status=jsonObjectMain.optJSONObject("responseStatus");
+            if(jsonObject_status.optString("statusCode","").length()>0
+                    && jsonObject_status.optString("statusCode","").equals("200"))
+            {
+                result=true;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

@@ -148,7 +148,7 @@ public class homecontent_model implements Serializable{
     private int serviceassetid;
 
      private String programDescription;
-     private String programId;
+     private String programId,packagestatus,expiryDate;
 
     public String getProgramDescription() {
         return programDescription;
@@ -165,4 +165,22 @@ public class homecontent_model implements Serializable{
     public void setProgramId(String programId) {
         this.programId = programId;
     }
+
+    public String getpackagestatus() {
+        return packagestatus;
+    }
+
+    public void setpackagestatus(String packagestatus) {
+        this.packagestatus = packagestatus;
+    }
+
+    public String getpackageexpiryDate() {
+        return expiryDate;
+    }
+
+    public void setpackageexpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+
 }

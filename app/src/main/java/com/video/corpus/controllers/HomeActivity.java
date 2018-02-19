@@ -49,6 +49,7 @@ public class HomeActivity extends BaseActivity {
         context = HomeActivity.this;
         cc=new commonclass(context);
         toolbartext(context,getString(R.string.home_title));
+        toolbarsearch(context);
          bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
         readresponse();
@@ -283,6 +284,7 @@ public class HomeActivity extends BaseActivity {
             public void readResponse(String res) {
                 showlogs("subscriberesponse", res);
                 if (!TextUtils.isEmpty(res)) {
+
                     loadsubscriberinfo(res);
                 }
             }
@@ -412,6 +414,7 @@ public class HomeActivity extends BaseActivity {
         if(readstatuscode(res,context))
         {
             try {
+                cc.setprofileinfo(res);
                 JSONObject jsonObject=new JSONObject(res);
                 cc.setusername(jsonObject.optString("emailId",""));
                 showlogs("username",cc.getusername());
